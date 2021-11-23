@@ -1,0 +1,19 @@
+:local ddnsuser "mail"
+:local ddnspass "password"
+:local ddnshost "ddns hostname"
+:local ddnsinterface "lte1"
+
+:global ddnslastip
+:global ddnsip [ /ip address get [find interface=$ddnsinterface disabled=no] address ]
+
+:if ([ :typeof $ddnslastip ] = nil ) do={:global ddnslastip 0.0.0.0/0 }
+:if ([ :typeof $ddnsip ] = nil ) do={
+:log info ("DDNS: No ip address present on " . $ddnsinterface . ", please check.") } else={
+
+:if ($ddnsip != $ddnslastip) do={
+:log info "DDNS: Sending UPDATE!"
+/tool fetch url="http://dynupdate.no-ip.com/nic/update?hostname=$ddnshost&myip=$ddnsip" user=$ddnsuser password=$ddnspass keep-result=no;
+:delay 5s
+:global ddnslastip $ddnsip } else={
+:log info "DDNS: No change" }
+}
