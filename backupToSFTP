@@ -1,0 +1,22 @@
+# Logowanie rozpoczęcia procesu
+:log info "Rozpoczynam tworzenie kopii zapasowej"
+
+# Ustalanie bieżącej daty
+:local currentDate [/system clock get date]
+
+# Tworzenie kopii zapasowej z datą w nazwie
+:global backupName ("backup_" . $currentDate . ".backup")
+/system backup save name=$backupName password=TwojeHaslo123!
+
+# Krótka przerwa, aby zapewnić zapisanie kopii zapasowej
+:delay 10s
+
+# Logowanie rozpoczęcia wysyłania kopii zapasowej przez SFTP
+:log info "Rozpoczynam wysyłanie kopii zapasowej przez SFTP"
+
+# Wysyłanie kopii zapasowej na serwer za pomocą SFTP
+:put $backupName
+/tool fetch url="sftp://10.5.0.1/home/mikrotik/$backupName" src-path=$backupName upload=yes user=mikrotik password="ToJestTrudneHaslo@2023!"
+
+# Logowanie zakończenia wysyłania kopii zapasowej
+:log info "Kopia zapasowa wysłana pomyślnie przez SFTP"
