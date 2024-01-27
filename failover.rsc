@@ -1,10 +1,10 @@
 # RouterOS script: Failover and Recovery
 # Copyright Grzegorz Kowalik <kontakt@grzegorzkowalik.com>
 #
-#Skrypt realizujacy usuluge Failover miedzy dwoma operatorami ISP
+#Skrypt realizujacy usluge Failover miedzy dwoma operatorami ISP
 #INFO: Musialem zmienne dodac w funkcjach, poniewaz nie dokonca zmienna :globla chciala dzialac
-#INFO: Testtowane na weresji ROS 7.12.1
-#INFO: Oznacz komenatarzem domyslne trasy trasy routingu. WAN1 jako podstaowowa trasa, WAN2 jako zapas.
+#INFO: Testowane na wersji ROS 7.12.1
+#INFO: Oznacz komentarzem domyslne trasy routingu. WAN1 jako podstaowowa trasa, WAN2 jako zapas.
 
 #Funkcja sprawdza czy jest Internet przez glowny interfejs
 :local checkConnections do={
@@ -35,7 +35,7 @@
 }
 
 #funkcja odpowiedzialna za przelaczenie routingu na zapasowy Interfejs LTE
-:global makeFialover do={
+:global makeFailover do={
     :local secondaryInterface lte1
     :local primaryInterface ether1
     
@@ -55,10 +55,10 @@
 }
 
 #glowne wywolanie skryptu, sprawdza ilosc odpowiedzi z funcji checkConnection, jezeli na 10 pingow mamy 7 timeoutow przechodzi do realizacji Failovera
-#dodatkowo weryfikuje na jakim WANie obecnie pracuje urzadzenie, aby nie zapetlic sie w powiadomiech i przelaczaniu routingu
+#dodatkowo weryfikuje na jakim WANie obecnie pracuje urzadzenie, aby nie zapetlic sie w powiadomieniach i przelaczaniu routingu
 :if ([$checkFailoverStatus]=0) do={
     :if ([$checkConnections] >= 7) do={
-        $makeFialover
+        $makeFailover
         }
 }
 :if ([$checkFailoverStatus]=1) do={
