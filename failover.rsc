@@ -4,7 +4,7 @@
 #Skrypt realizujacy usluge Failover miedzy dwoma operatorami ISP
 #INFO: Musialem zmienne dodac w funkcjach, poniewaz nie dokonca zmienna :globla chciala dzialac
 #INFO: Testowane na wersji ROS 7.12.1
-#INFO: Oznacz komentarzem domyslne trasy routingu. WAN1 jako podstaowowa trasa, WAN2 jako zapas.
+#INFO: Oznacz komentarzem domyslne trasy routingu. WAN1 jako podstawowa trasa, WAN2 jako zapas.
 
 #Funkcja sprawdza czy jest Internet przez glowny interfejs
 :local checkConnections do={
@@ -21,7 +21,7 @@
     :return  $failCount
 }
 
-#Sprawdzamy czy FailOver jest aktywny, i czy dziala zapasowe lacze, 
+#Sprawdzamy czy FailOver jest aktywny, i czy dziala zapasowe lacze 
 :global checkFailoverStatus do={
     :local failOverStatus    
     :if ([/ip route get [find where comment="WAN1"] disabled]=true  && [/ip route get [find where comment="WAN2"] disabled]=false) do={
